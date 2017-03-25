@@ -1,19 +1,33 @@
-<!DOCTYPE html>
+<?php
+
+$message = "";
+
+if( isset($_POST['password']) )
+{
+  if(strcmp($_POST['password'], "password") != 0){
+    $message = 'Incorrect!';
+  } else {
+    header('Location: ' . 'success.html');
+  }
+}
+ ?>
+ <!DOCTYPE html>
 <html>
 <head>
 <title>Victim Page</title>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
 </head>
 
 <body style="text-align: center; font-family: Arial">
-<h1 class="blinkLink" >Group 10 Form Login</h1>
+<h1>Group 10 Form Login</h1>
 
-<form method="post">
-<label>Username: </label><input type="text" placeholder="Username"><br>
-<label>Password: </label><input type="password">
+<form method="post" action="index.php">
+<label>Username: </label><input name="username" type="text" placeholder="Username"><br>
+<label>Password: </label><input type="password" name="password">
 <br>
 <input type="submit" value="Submit">
 </form>
+<?php echo $message; ?>
+
+
 </body>
 </html>
