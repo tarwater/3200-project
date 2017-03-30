@@ -9,7 +9,12 @@ public class Main {
     Input input = new Input();
     input.collect();
 
+    if(input.isBrute){
 
+        double numPossibilities = Math.pow(input.characterSpace.length(), input.maxPasswordLength);
+        System.out.println("Possible combinations: " + numPossibilities);
+
+    }
 
     }
 }
