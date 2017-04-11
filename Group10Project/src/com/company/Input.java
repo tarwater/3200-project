@@ -1,13 +1,23 @@
 package com.company;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Input {
 
-    String url, username, usernameFilePath, dictionaryPath, characterSpace;
+    public String url, username, usernameFilePath, dictionaryPath, characterSpace;
     boolean usernameKnown, isForm, isBrute;
     Scanner scanner;
     int maxPasswordLength;
+
+    BufferedReader br;
+    FileReader fr;
+
+    ArrayList<String> usernames;
+    ArrayList<String> dictionaryWords;
 
     public Input() {
         username = "";
@@ -27,26 +37,101 @@ public class Input {
             print("Enter the username");
             username = scanner.next();
         } else {
-            print("Specify the path to a list of usernames:");
+            print("Specify the path to a list of usernames: (The less the better)");
             usernameFilePath = scanner.next();
+            usernames = new ArrayList<String>();
+            readUsernames(usernameFilePath);
         }
 
         print("Form-based or Basic Auth access control? (Enter ‘form’ or ‘ba’)");
         isForm = isFormBased(scanner.next());
 
-        print("Dictionary or brute-force attack?");
+        print("Dictionary or brute-force attack? (Enter 'd' or 'b");
         isBrute = isBrute(scanner.next());
 
-        if(!isBrute){
+        if (!isBrute) {
             print("Enter the path the the dictionary file:");
             dictionaryPath = scanner.next();
+            dictionaryWords = new ArrayList<String>();
+            readWords(dictionaryPath);
+//            showDictInfo();
         } else {
             print("Enter the max password length:");
             maxPasswordLength = Integer.parseInt(scanner.next());
+            characterSpaceSelector();
 
-            characterSpace = characterSpaceSelector();
+            showBruteInfo();
         }
+    }
 
+    public void readWords(String path){
+        try {
+
+            fr = new FileReader(path);
+            br = new BufferedReader(fr);
+
+            String sCurrentLine;
+
+            br = new BufferedReader(new FileReader(path));
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                dictionaryWords.add(sCurrentLine);
+            }
+
+            print(dictionaryWords.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+
+                if (fr != null)
+                    fr.close();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void readUsernames(String path){
+
+        try {
+
+            fr = new FileReader(path);
+            br = new BufferedReader(fr);
+
+            String sCurrentLine;
+
+            br = new BufferedReader(new FileReader(path));
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                usernames.add(sCurrentLine);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+
+                if (fr != null)
+                    fr.close();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void showBruteInfo(){
+        double numPossibilities = Math.pow(characterSpace.length(), maxPasswordLength);
+        System.out.println("Possible combinations: " + numPossibilities);
     }
 
     public boolean validateYesNo(String s) {
@@ -75,12 +160,12 @@ public class Input {
         }
     }
 
-    public boolean isBrute(String s){
+    public boolean isBrute(String s) {
         s = s.toLowerCase();
 
-        if(s.equals("d")){
+        if (s.equals("d")) {
             return false;
-        } else if (s.equals("b")){
+        } else if (s.equals("b")) {
             return true;
         } else {
             print("Enter 'd' or 'b':");
@@ -88,7 +173,7 @@ public class Input {
         }
     }
 
-    public String characterSpaceSelector(){
+    public String characterSpaceSelector() {
 
         String space1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         String space2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
@@ -116,6 +201,7 @@ public class Input {
                 print("Enter a character space:");
                 characterSpace = scanner.next();
                 break;
+
         }
 
         return null;
@@ -123,5 +209,9 @@ public class Input {
 
     public void print(String s) {
         System.out.println(s);
+    }
+
+    public String getCharacterSpace() {
+        return characterSpace;
     }
 }
