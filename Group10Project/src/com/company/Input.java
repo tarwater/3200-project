@@ -46,7 +46,7 @@ public class Input {
         print("Form-based or Basic Auth access control? (Enter ‘form’ or ‘ba’)");
         isForm = isFormBased(scanner.next());
 
-        print("Dictionary or brute-force attack? (Enter 'd' or 'b");
+        print("Dictionary or brute-force attack? (Enter 'd' or 'b)");
         isBrute = isBrute(scanner.next());
 
         if (!isBrute) {
