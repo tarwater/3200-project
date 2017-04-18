@@ -4,10 +4,10 @@ $message = "";
 
 if( isset($_POST['password']) )
 {
-  if(strcmp($_POST['password'], "123456") != 0){
-    $message = 'Incorrect!';
+  if(strcmp($_POST['password'], "batman") != 0){
+    $message = '<div id="message">Incorrect!</div>';
   } else {
-    header('Location: ' . 'success.html');
+    header('Location: success.html');
   }
 }
  ?>
@@ -15,9 +15,17 @@ if( isset($_POST['password']) )
 <html>
 <head>
 <title>Victim Page</title>
+<style>
+#message{
+color: red;
+margin-top: 20px;
+font-size: 2em;
+}
+</style>
 </head>
 
 <body style="text-align: center; font-family: Arial">
+
 <h1>Group 10 Form Login</h1>
 
 <form method="post" action="index.php" name="login">

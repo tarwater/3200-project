@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Input {
 
     public String url, username, usernameFilePath, dictionaryPath, characterSpace;
-    boolean usernameKnown, isForm, isBrute;
+    boolean singleUsername, isForm, isBrute;
     Scanner scanner;
     int maxPasswordLength;
 
@@ -30,10 +30,10 @@ public class Input {
         print("Enter the target website URL:");
         url = scanner.next();
 
-        print("Is the username known? y/n");
-        usernameKnown = validateYesNo(scanner.next());
+        print("Use ONE username? (Enter 'y' on 'n')");
+        singleUsername = validateYesNo(scanner.next());
 
-        if (usernameKnown) {
+        if (singleUsername) {
             print("Enter the username");
             username = scanner.next();
         } else {
