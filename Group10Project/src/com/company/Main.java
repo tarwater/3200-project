@@ -16,9 +16,16 @@ public class Main {
         input.collect();
 
         if (input.isForm) {
-            FormLogin formLogin = new FormLogin(input.url, input.username, input.dictionaryWords);
-            formLogin.setup();
-            formLogin.login();
+
+            if(input.singleUsername) {
+                FormLogin formLogin = new FormLogin(input.url, input.username, input.dictionaryWords);
+                formLogin.setup();
+                formLogin.login();
+            } else {
+                FormLogin formLogin = new FormLogin(input.url, input.username, input.dictionaryWords, input.usernames);
+                formLogin.setup();
+                formLogin.login();
+            }
         }
     }
 
