@@ -55,7 +55,6 @@ public class FormLogin {
         if (manyUsernames) {
 
             for (String n : usernames) {
-                System.out.println("Using username: " + n);
                 username = n;
                 startAttempts();
             }
@@ -81,10 +80,10 @@ public class FormLogin {
                 String resultUrl = result.getUrl().toString();
 
                 if (resultUrl.equals("http://localhost/3200-project/index.php")) {
-                    System.out.println("Failed attempt with password: " + password);
+                    System.out.println("Failed attempt with: " + username + ", "+ password);
 
                 } else {
-                    System.out.println("Success! Password is " + password);
+                    System.out.println("Success with username " + username+ "! " + "Password is " + password);
                     break;
                 }
 
