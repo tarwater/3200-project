@@ -1,0 +1,7 @@
+AuthType Basic
+AuthName "Restricted Content"
+AuthUserFile /opt/lampp/htdocs/.htpasswd
+
+<Files "ba.html">
+  Require valid-user
+</Files>

@@ -50,7 +50,7 @@ public class Input {
         isBrute = isBrute(scanner.next());
 
         if (!isBrute) {
-            print("Enter the path the the dictionary file:");
+            print("Enter the path of the dictionary file:");
             dictionaryPath = scanner.next();
             dictionaryWords = new ArrayList<String>();
             readWords(dictionaryPath);
@@ -131,7 +131,7 @@ public class Input {
 
     public void showBruteInfo(){
         double numPossibilities = Math.pow(characterSpace.length(), maxPasswordLength);
-        System.out.println("Possible combinations: " + numPossibilities);
+        System.out.println("Possible passwords: " + numPossibilities);
     }
 
     public boolean validateYesNo(String s) {

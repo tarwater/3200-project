@@ -2,9 +2,12 @@
 
 $message = "";
 
+$username = "admin";
+$password = "Abc";
+
 if( isset($_POST['password']) )
 {
-  if(strcmp($_POST['password'], "batman") != 0 || strcmp($_POST['username'], "admin") != 0){
+  if(strcmp($_POST['password'], $password) != 0 || strcmp($_POST['username'], $username) != 0){
     $message = '<div id="message">Incorrect!</div>';
   } else {
     header('Location: success.html');
