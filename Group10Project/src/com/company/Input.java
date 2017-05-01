@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class Input {
         }
     }
 
-    public void readWords(String path){
+    public void readWords(String path) {
         try {
 
             fr = new FileReader(path);
@@ -80,6 +81,10 @@ public class Input {
 
             print(dictionaryWords.toString());
 
+        } catch (FileNotFoundException e) {
+            System.out.println("No such file. Try again.");
+            readWords(scanner.next());
+
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -97,7 +102,7 @@ public class Input {
         }
     }
 
-    public void readUsernames(String path){
+    public void readUsernames(String path) {
 
         try {
 
@@ -112,7 +117,12 @@ public class Input {
                 usernames.add(sCurrentLine);
             }
 
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+
+            System.out.println("No such file. Try again.");
+            readUsernames(scanner.next());
+        } catch
+                (IOException e) {
             e.printStackTrace();
 
         } finally {
@@ -129,7 +139,7 @@ public class Input {
         }
     }
 
-    public void showBruteInfo(){
+    public void showBruteInfo() {
         double numPossibilities = Math.pow(characterSpace.length(), maxPasswordLength);
         System.out.println("Possible passwords: " + numPossibilities);
     }
