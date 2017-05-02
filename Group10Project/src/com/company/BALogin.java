@@ -10,6 +10,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BALogin {
 
@@ -26,6 +27,8 @@ public class BALogin {
     WebClient client;
     HtmlPage page;
     HtmlForm form;
+
+    Scanner scanner;
 
     boolean isBrute;
     boolean found;
@@ -64,9 +67,10 @@ public class BALogin {
         manyUsernames = true;
     }
 
-
     public void setup() {
         found = false;
+        scanner = new Scanner(System.in);
+
         if (isBrute) {
             if (!manyUsernames) {
                 for (int i = 0; i < maxLength; i++) {
@@ -95,9 +99,7 @@ public class BALogin {
                     startDictAttempts();
                 }
             }
-
         }
-
     }
 
     public void startDictAttempts() {
@@ -131,7 +133,11 @@ public class BALogin {
             found = true;
             return;
 
-        } catch (IOException e) {
+        } catch( MalformedURLException e ){
+            System.out.println("Invalid URL. Try again: ");
+            url = scanner.next();
+            startBruteAttempts("", 1);
+        }catch (IOException e) {
             e.printStackTrace();
         } catch (FailingHttpStatusCodeException e) {
             System.out.println("Failed attempt with: " + username + ", " + curr);
@@ -153,28 +159,6 @@ public class BALogin {
 
 
     }
-    //    public void go(){
-//
-//        String target = "http://localhost/3200-project/ba.html";
-//        String username = "admin";
-//        String password = "password";
-//
-//        client = newWebClient();
-//
-//        try {
-//            HtmlPage page = (HtmlPage) client.getPage(target);
-//
-//            System.out.println(page.getBody().toString());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        catch (FailingHttpStatusCodeException e){
-//
-//        }
-//    }
-
 
     protected WebClient newWebClient(String username, String password) {
         WebClient client = new WebClient();
