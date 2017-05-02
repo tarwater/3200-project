@@ -3,7 +3,7 @@
 $message = "";
 
 $username = "admin";
-$password = "Abc";
+$password = "Aa";
 
 if( isset($_POST['password']) )
 {
